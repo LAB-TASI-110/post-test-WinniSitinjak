@@ -1,50 +1,42 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <string.h>
 
 int main() {
-    int N;
-    int stok[1000];
-    char kategori;
+    int n;
+    int stok[100];
+    char kategori[100][50];
+    char cari[50];
     int total = 0;
-    int i;
 
-    // input jumlah data
-    do {
-        printf("Masukkan jumlah data stok: ");
-        scanf("%d", &N);
-    } while (N <= 0);
+    // Input jumlah data
+    printf("Masukkan jumlah barang: ");
+    scanf("%d", &n);
 
-    // input stok barang
-    for(i = 0; i < N; i++) {
-        do {
-            printf("Masukkan stok ke-%d: ", i + 1);
-            scanf("%d", &stok[i]);
-        } while (stok[i] < 0);
+    // Input data barang
+    for(int i = 0; i < n; i++) {
+        printf("\nBarang ke-%d\n", i + 1);
+
+        printf("Stok: ");
+        scanf("%d", &stok[i]);
+
+        printf("Kategori: ");
+        scanf("%s", kategori[i]);
     }
 
-    // input kategori
-    do {
-        printf("Masukkan kategori (A/B/C): ");
-        scanf(" %c", &kategori);
-        kategori = toupper(kategori);
-    } while (kategori != 'A' && kategori != 'B' && kategori != 'C');
+    // Input kategori yang dicari
+    printf("\nMasukkan kategori yang ingin dihitung: ");
+    scanf("%s", cari);
 
-    // menghitung total berdasarkan pola rak
-    for(i = 0; i < N; i++) {
-        int posisi = i + 1;
-
-        if(kategori == 'A' && posisi % 3 == 1) {
-            total += stok[i];
-        }
-        else if(kategori == 'B' && posisi % 3 == 2) {
-            total += stok[i];
-        }
-        else if(kategori == 'C' && posisi % 3 == 0) {
+    // Proses pencarian dan penjumlahan
+    for(int i = 0; i < n; i++) {
+        if(strcmp(kategori[i], cari) == 0) {
             total += stok[i];
         }
     }
 
-    printf("Total stok untuk kategori %c adalah %d\n", kategori, total);
+    // Output
+    printf("\nKategori yang dicari: %s", cari);
+    printf("\nTotal stok: %d\n", total);
 
     return 0;
 }

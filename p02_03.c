@@ -2,52 +2,90 @@
 #include <string.h>
 
 int main() {
-    char nama[100];
-    char pesanan[100];
-    int jumlah;
-    int harga = 0;
-    int total_harga;
-    float diskon = 0;
-    float total_bayar;
+    char nama[50];
+    int n, i;
+    int kode;
+    int total = 0, harga;
+    int voucher;
+    int potonganVoucher = 0;
+    float diskonPersen = 0;
+    int diskon = 0;
+    int totalBayar;
 
-    printf("Masukkan nama pemesan: ");
-    scanf(" %[^\n]", nama);
+    printf("=== SISTEM KAFETARIA IT DEL ===\n");
 
-    printf("Masukkan pesanan: ");
-    scanf(" %[^\n]", pesanan);
+    // Input nama
+    printf("Nama Pemesan: ");
+    scanf("%s", nama);
 
-    printf("Masukkan jumlah pesanan: ");
-    scanf("%d", &jumlah);
+    // Input jumlah pesanan
+    printf("Jumlah Pesanan: ");
+    scanf("%d", &n);
 
-    if (strcmp(pesanan, "bakwan") == 0 || strcmp(pesanan, "tahu isi") == 0 || strcmp(pesanan, "tempe") == 0) {
-        harga = 10000;
+    // Loop input pesanan
+    for(i = 1; i <= n; i++) {
+        printf("\nPesanan ke-%d\n", i);
+        printf("1. Bakwan\n2. Tempe\n3. Tahu\n");
+        printf("4. Roti Isi Ayam\n5. Nugget\n6. Sosis\n");
+        printf("7. Kopi Hitam\n8. Cappucino\n9. Matcha\n10. Es Teh\n");
+        printf("Pilih menu (1-10): ");
+        scanf("%d", &kode);
+
+        // Tentukan harga
+        if(kode >= 1 && kode <= 3) {
+            harga = 10000;
+        } else if(kode >= 4 && kode <= 6) {
+            harga = 15000;
+        } else if(kode >= 7 && kode <= 10) {
+            harga = 8000;
+        } else {
+            printf("Kode tidak valid!\n");
+            harga = 0;
+        }
+
+        total += harga;
     }
-    else if (strcmp(pesanan, "roti isi ayam") == 0 || strcmp(pesanan, "kentang") == 0 || strcmp(pesanan, "sosis") == 0 || strcmp(pesanan, "nugget") == 0) {
-        harga = 15000;
-    }
-    else if (strcmp(pesanan, "kopi hitam") == 0 || strcmp(pesanan, "cappucino") == 0 || strcmp(pesanan, "matcha") == 0 || strcmp(pesanan, "teh manis dingin") == 0) {
-        harga = 8000;
-    }
 
-    total_harga = harga * jumlah;
-
-    if (total_harga >= 100000) {
-        int kelipatan = total_harga / 100000;
-        diskon = total_harga * (0.10 * kelipatan);
-    }
-    else if (total_harga >= 50000) {
-        int kelipatan = total_harga / 50000;
-        diskon = total_harga * (0.05 * kelipatan);
+    // Hitung diskon
+    if(total > 50000) {
+        int kelipatan = total / 50000;
+        diskonPersen = kelipatan * 5; // persen
+        diskon = total * diskonPersen / 100;
     }
 
-    total_bayar = total_harga - diskon;
+    // Input voucher
+    printf("\nJumlah Voucher: ");
+    scanf("%d", &voucher);
 
-    printf("\nNama Pemesan : %s\n", nama);
-    printf("Pesanan : %s\n", pesanan);
-    printf("Jumlah Pesanan : %d\n", jumlah);
-    printf("Total Harga : %.0f\n", (float)total_harga);
-    printf("Diskon : %.0f\n", diskon);
-    printf("Total Bayar : %.0f\n", total_bayar);
+    potonganVoucher = voucher * 5000;
+
+    // Hitung total bayar
+    totalBayar = total - diskon - potonganVoucher;
+
+    if(totalBayar < 0) {
+        totalBayar = 0;
+    }
+
+    // Output struk
+    printf("\n=== STRUK PEMBAYARAN ===\n");
+    printf("Nama Pemesan : %s\n", nama);
+    printf("Total Harga  : %d\n", total);
+
+    if(diskon > 0) {
+        printf("Diskon       : %d (%.0f%%)\n", diskon, diskonPersen);
+    } else {
+        printf("Diskon       : Tidak ada\n");
+    }
+
+    if(voucher > 0) {
+        printf("Voucher      : %d (Potongan %d)\n", voucher, potonganVoucher);
+    } else {
+        printf("Voucher      : Tidak ada\n");
+    }
+
+    printf("Total Bayar  : %d\n", totalBayar);
+
+    printf("\nTerima kasih!\n");
 
     return 0;
 }

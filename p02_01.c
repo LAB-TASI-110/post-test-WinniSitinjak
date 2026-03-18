@@ -2,77 +2,61 @@
 #include <string.h>
 
 int main() {
-    char kota[10];
-    int beratButet, beratUcok, totalBerat;
-    int tarif = 0;
-    int totalOngkir;
-    int diskon = 0;
+    char kota[3][4];
+    int berat_butet[3];
+
     int i;
+    for(i = 0; i < 3; i++) {
+        printf("Input kode kota dan berat butet: ");
+        scanf("%s %d", kota[i], &berat_butet[i]);
+    }
 
-    for (i = 0; ; i++) {
+    printf("\n=== STRUK DEL EXPRESS ===\n");
 
-        scanf("%s", kota);
+    for(i = 0; i < 3; i++) {
+        int ongkir;
+        int berat_ucok = berat_butet[i] + 2;
+        int total_berat = berat_butet[i] + berat_ucok;
+        int total_ongkos;
+        float diskon = 0;
 
-        if (strcmp(kota, "END") == 0) {
-            break;
-        }
-
-        scanf("%d", &beratButet);
-
-        if (beratButet < 0) {
-            printf("Input tidak valid\n");
+        // menentukan ongkir dan lokasi
+        if(strcmp(kota[i], "mdn") == 0) {
+            ongkir = 8000;
+            printf("\nKota Tujuan: Medan (Sumatera)\n");
+        } else if(strcmp(kota[i], "blg") == 0) {
+            ongkir = 5000;
+            printf("\nKota Tujuan: Balige (Sumatera)\n");
+        } else if(strcmp(kota[i], "jkt") == 0) {
+            ongkir = 12000;
+            printf("\nKota Tujuan: Jakarta (Luar Sumatera - Garansi)\n");
+        } else if(strcmp(kota[i], "sby") == 0) {
+            ongkir = 13000;
+            printf("\nKota Tujuan: Surabaya (Luar Sumatera - Garansi)\n");
+        } else {
+            printf("\nKota tidak valid!\n");
             continue;
         }
 
-        beratUcok = beratButet + 2;
-        totalBerat = beratButet + beratUcok;
+        total_ongkos = total_berat * ongkir;
 
-        if (strcmp(kota, "MDN") == 0) {
-            tarif = 12000;
-        } 
-        else if (strcmp(kota, "JKT") == 0) {
-            tarif = 15000;
-        } 
-        else if (strcmp(kota, "BLG") == 0) {
-            tarif = 10000;
-        } 
-        else if (strcmp(kota, "SBY") == 0) {
-            tarif = 14000;
-        } 
-        else {
-            printf("Kode kota tidak valid\n");
-            continue;
+        // diskon
+        if(total_berat > 10) {
+            diskon = 0.1 * total_ongkos;
         }
 
-        totalOngkir = totalBerat * tarif;
+        // output struk
+        printf("Berat Butet   : %d kg\n", berat_butet[i]);
+        printf("Berat Ucok    : %d kg\n", berat_ucok);
+        printf("Total Berat   : %d kg\n", total_berat);
+        printf("Total Ongkos  : %d\n", total_ongkos);
 
-        if (totalBerat >= 12) {
-            diskon = 20;
-            totalOngkir = totalOngkir - (totalOngkir * 20 / 100);
-        } 
-        else if (totalBerat >= 8) {
-            diskon = 10;
-            totalOngkir = totalOngkir - (totalOngkir * 10 / 100);
-        } 
-        else {
-            diskon = 0;
-        }
-
-        printf("=== STRUK DEL-EXPRESS ===\n");
-        printf("Kota Tujuan : %s\n", kota);
-        printf("Berat Paket Butet : %d kg\n", beratButet);
-        printf("Berat Paket Ucok : %d kg\n", beratUcok);
-        printf("Total Berat : %d kg\n", totalBerat);
-        printf("Total Ongkir : Rp %d\n", totalOngkir);
-
-        if (diskon == 20) {
-            printf("Promo : Diskon 20%%\n");
-        } 
-        else if (diskon == 10) {
-            printf("Promo : Diskon 10%%\n");
-        } 
-        else {
-            printf("Promo : Tidak ada\n");
+        if(diskon > 0) {
+            printf("Diskon 10%%    : %.0f\n", diskon);
+            printf("Bayar         : %.0f\n", total_ongkos - diskon);
+        } else {
+            printf("Diskon        : Tidak ada\n");
+            printf("Bayar         : %d\n", total_ongkos);
         }
     }
 
